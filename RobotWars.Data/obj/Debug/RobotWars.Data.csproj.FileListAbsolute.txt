@@ -1,0 +1,6 @@
+C:\Users\user\Projects\CSHARP\RobotWars\RobotWars.Data\bin\Debug\RobotWars.Data.dll
+C:\Users\user\Projects\CSHARP\RobotWars\RobotWars.Data\bin\Debug\RobotWars.Data.pdb
+C:\Users\user\Projects\CSHARP\RobotWars\RobotWars.Data\obj\Debug\RobotWars.Data.csprojAssemblyReference.cache
+C:\Users\user\Projects\CSHARP\RobotWars\RobotWars.Data\obj\Debug\RobotWars.Data.csproj.CoreCompileInputs.cache
+C:\Users\user\Projects\CSHARP\RobotWars\RobotWars.Data\obj\Debug\RobotWars.Data.dll
+C:\Users\user\Projects\CSHARP\RobotWars\RobotWars.Data\obj\Debug\RobotWars.Data.pdb
