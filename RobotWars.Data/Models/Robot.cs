@@ -1,4 +1,3 @@
-using System;
 using RobotWars.Data.Models.Enums;
 using RobotWars.Data.Models.Interfaces;
 
@@ -6,13 +5,6 @@ namespace RobotWars.Data.Models
 {
     public class Robot : IRobot
     {
-        public ILocation location { get; set; }
-        public IArena arena { get; set; }
-
-        public int id { get; set; }
-        
-        public bool finishedMovement { get; set; }
-
         public Robot(Arena a, int uid, int x = 0, int y = 0, Compass h = Compass.NORTH)
         {
             id = uid;
@@ -21,27 +13,18 @@ namespace RobotWars.Data.Models
             lastUsed = true;
             finishedMovement = true;
         }
-        
+
+        public bool finishedMovement { get; set; }
+
         public bool lastUsed { get; set; }
+        public ILocation location { get; set; }
+        public IArena arena { get; set; }
+
+        public int id { get; set; }
 
         public string getPos()
         {
-            return String.Format("{0} {1} {2}", location.axisX, location.axisY, (char)location.heading);
-        }
-        
-        public int getX()
-        {
-            return location.axisX;
-        }
-
-        public int getY()
-        {
-            return location.axisY;
-        }
-
-        public IArena getArena()
-        {
-            return arena;
+            return string.Format("{0} {1} {2}", location.axisX, location.axisY, (char) location.heading);
         }
 
         public void makeMove()
@@ -49,7 +32,7 @@ namespace RobotWars.Data.Models
             switch (location.heading)
             {
                 case Compass.NORTH:
-                    if(location.axisY != arena.arenaY)
+                    if (location.axisY != arena.arenaY)
                         location.axisY += 1;
                     break;
                 case Compass.WEST:
@@ -64,8 +47,6 @@ namespace RobotWars.Data.Models
                     if (location.axisX != arena.arenaX)
                         location.axisX += 1;
                     break;
-                
-                
             }
         }
 
@@ -87,7 +68,7 @@ namespace RobotWars.Data.Models
                     break;
             }
         }
-        
+
         public void rotateRight()
         {
             switch (location.heading)
@@ -101,7 +82,7 @@ namespace RobotWars.Data.Models
                 case Compass.SOUTH:
                     location.heading = Compass.WEST;
                     break;
-                        
+
                 case Compass.WEST:
                     location.heading = Compass.NORTH;
                     break;

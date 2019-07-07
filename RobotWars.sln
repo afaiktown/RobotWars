@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotWars.Game", "RobotWars
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotWars.Data", "RobotWars.Data\RobotWars.Data.csproj", "{6E2303F0-DC4F-46CC-9C69-4D88A10F87E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotWars.Test", "RobotWars.Test\RobotWars.Test.csproj", "{C9303E84-4465-4378-981F-0AB433D316ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,18 @@ Global
 		{6E2303F0-DC4F-46CC-9C69-4D88A10F87E4}.Release|x64.Build.0 = Release|Any CPU
 		{6E2303F0-DC4F-46CC-9C69-4D88A10F87E4}.Release|x86.ActiveCfg = Release|Any CPU
 		{6E2303F0-DC4F-46CC-9C69-4D88A10F87E4}.Release|x86.Build.0 = Release|Any CPU
+		{C9303E84-4465-4378-981F-0AB433D316ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9303E84-4465-4378-981F-0AB433D316ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9303E84-4465-4378-981F-0AB433D316ED}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C9303E84-4465-4378-981F-0AB433D316ED}.Debug|x64.Build.0 = Debug|Any CPU
+		{C9303E84-4465-4378-981F-0AB433D316ED}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C9303E84-4465-4378-981F-0AB433D316ED}.Debug|x86.Build.0 = Debug|Any CPU
+		{C9303E84-4465-4378-981F-0AB433D316ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9303E84-4465-4378-981F-0AB433D316ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9303E84-4465-4378-981F-0AB433D316ED}.Release|x64.ActiveCfg = Release|Any CPU
+		{C9303E84-4465-4378-981F-0AB433D316ED}.Release|x64.Build.0 = Release|Any CPU
+		{C9303E84-4465-4378-981F-0AB433D316ED}.Release|x86.ActiveCfg = Release|Any CPU
+		{C9303E84-4465-4378-981F-0AB433D316ED}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

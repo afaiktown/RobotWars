@@ -11,40 +11,32 @@ namespace RobotWars.Data.Controllers
 {
     public static class GameController
     {
-        private static IArenaRepository _arenaRepository = new ArenaRepository();
-        private static IRobotRepository _robotRepository = new RobotRepository();
-        
+        private static readonly IArenaRepository _arenaRepository = new ArenaRepository();
+        private static readonly IRobotRepository _robotRepository = new RobotRepository();
+
         private static readonly string arenaCommand = @"^\d+\s+\d$";
         private static readonly string moveCommand = @"^[m|M|r|R|l|L]+$";
         private static readonly string robotCommand = @"^\d+\s+\d+\s+[n|w|e|s|N|W|E|S]$";
-        
-        public static bool process(string[] parameters)
+
+        public static void process(string[] parameters)
         {
-            Input inputCmd = Parser.getCommand(parameters);
+            var inputCmd = Parser.getCommand(parameters);
 
             switch (inputCmd)
             {
                 case Input.ONE:
                     //Movement
-                    if(!doMovement(parameters[0])) {
-                        Console.WriteLine(SysMsg.ROBOT_NOT_INITIALIZED);
-                    }
+                    if (!doMovement(parameters[0])) Console.WriteLine(SysMsg.ROBOT_NOT_INITIALIZED);
                     break;
                 case Input.TWO:
                     //New arena
-                    if (!createArena(parameters)) {
-                        Console.WriteLine(SysMsg.CREATE_ARENA_FAILED);
-                    }
+                    if (!createArena(parameters)) Console.WriteLine(SysMsg.CREATE_ARENA_FAILED);
                     break;
                 case Input.THREE:
                     //initial placement
-                    if (!placeRobot(parameters)) {
-                        Console.WriteLine(SysMsg.PLACE_ROBOT_FAILED);
-                    }
+                    if (!placeRobot(parameters)) Console.WriteLine(SysMsg.PLACE_ROBOT_FAILED);
                     break;
             }
-            
-            return true;
         }
 
         private static int getAvailableRobotId()
@@ -54,14 +46,13 @@ namespace RobotWars.Data.Controllers
 
         public static bool doMovement(string parameters)
         {
-            Robot activeRobot = _robotRepository.Get().Count() > 0 ? _robotRepository.Get().First(r => r.lastUsed) : null;
-            
+            var activeRobot = _robotRepository.Get().Count() > 0 ? _robotRepository.Get().First(r => r.lastUsed) : null;
+
             if (Regex.IsMatch(parameters, moveCommand) && activeRobot != null && activeRobot.finishedMovement)
             {
                 activeRobot.finishedMovement = false;
-                
-                foreach (char c in parameters.ToUpper())
-                {
+
+                foreach (var c in parameters.ToUpper())
                     switch (c)
                     {
                         case 'R':
@@ -71,30 +62,27 @@ namespace RobotWars.Data.Controllers
                             activeRobot.rotateLeft();
                             break;
                         case 'M':
-                                
-                                activeRobot.makeMove();
+                            activeRobot.makeMove();
                             break;
                     }
-                }
-
-                activeRobot.finishedMovement = true;
 
                 Console.WriteLine(activeRobot.getPos());
+                switchRobots(activeRobot);
                 return true;
             }
-            
+
             return false;
         }
 
         public static bool createArena(string[] parameters)
         {
-            Arena checkArena = _arenaRepository.Get().Count() > 0 ? _arenaRepository.Get().First(r => r.lastUsed) : null;
-                    
+            var checkArena = _arenaRepository.Get().Count() > 0 ? _arenaRepository.Get().First(r => r.lastUsed) : null;
+
             if (checkArena != null)
                 checkArena.lastUsed = false;
-                    
-                    
-            if (Regex.IsMatch(String.Join(" ", parameters), arenaCommand))
+
+
+            if (Regex.IsMatch(string.Join(" ", parameters), arenaCommand))
             {
                 _arenaRepository.Add(new Arena(Convert.ToInt32(parameters[0]), Convert.ToInt32(parameters[1])));
                 return true;
@@ -105,17 +93,30 @@ namespace RobotWars.Data.Controllers
 
         public static bool placeRobot(string[] parameters)
         {
-            Arena availableArena = _arenaRepository.Get().Count() > 0 ? _arenaRepository.Get().First(a => a.lastUsed) : null;
-            Robot activeRobot = _robotRepository.Get().Count() > 0 ? _robotRepository.Get().First(r => r.lastUsed && r.finishedMovement) : null;
-                    
+            var availableArena = _arenaRepository.Get().Count() > 0
+                ? _arenaRepository.Get().First(a => a.lastUsed)
+                : null;
+            var activeRobot = _robotRepository.Get().Count() > 0
+                ? _robotRepository.Get().First(r => r.lastUsed && r.finishedMovement)
+                : null;
+
             if (activeRobot != null)
                 activeRobot.lastUsed = false;
 
-            if (Regex.IsMatch(String.Join(" ", parameters), robotCommand) && availableArena != null)
+            if (Regex.IsMatch(string.Join(" ", parameters), robotCommand) && availableArena != null)
             {
-                int generatedId = getAvailableRobotId();
-                Robot newRobot = new Robot(availableArena, generatedId, Convert.ToInt32(parameters[0]),
-                    Int32.Parse(parameters[1]), Parser.getDirection(parameters[2]));
+                var generatedId = getAvailableRobotId();
+
+                var correctX = Convert.ToInt32(parameters[0]) <= availableArena.arenaX
+                    ? Convert.ToInt32(parameters[0])
+                    : availableArena.arenaX;
+
+                var correctY = Convert.ToInt32(parameters[1]) <= availableArena.arenaY
+                    ? Convert.ToInt32(parameters[1])
+                    : availableArena.arenaY;
+
+                var newRobot = new Robot(availableArena, generatedId, correctX,
+                    correctY, Parser.getDirection(parameters[2]));
                 _robotRepository.Add(newRobot);
 
                 return true;
@@ -123,6 +124,21 @@ namespace RobotWars.Data.Controllers
 
             return false;
         }
-    }
 
+        public static void switchRobots(Robot robot)
+        {
+            var newRobot = _robotRepository.Get().Count() > robot.id
+                ? _robotRepository.Get().FirstOrDefault(r => r.id > robot.id)
+                : _robotRepository.Get().FirstOrDefault();
+
+            robot.lastUsed = false;
+            robot.finishedMovement = true;
+
+            if (newRobot != null)
+            {
+                newRobot.lastUsed = true;
+                newRobot.finishedMovement = true;
+            }
+        }
+    }
 }
